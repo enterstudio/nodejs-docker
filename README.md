@@ -30,6 +30,26 @@ For other docker hosts, you'll need to create a `Dockerfile` based on this image
 
 By default, the `CMD` is set to `npm start`. You can change this by specifying your own [`CMD` or `ENTRYPOINT`](http://docs.docker.com/engine/reference/builder/#cmd).
 
+### Kubernetes Configuration
+
+This image assumes your application listens on port 8080.
+To run an application based on this image inside a Kubernetes pod, you can use a Pod configuration like this:
+
+```yaml
+kind: Pod
+metadata:
+  name: app
+  namespace: default
+spec:
+  containers:
+  - image: $IMAGE_NAME
+    imagePullPolicy: IfNotPresent
+    name: app
+    ports:
+    - containerPort: 8080
+  restartPolicy: Always
+  ```
+
 ## Installing a different Node.js version
 
 The image includes the `install_node` script that can be used to install a particular Node.js version. For example:
